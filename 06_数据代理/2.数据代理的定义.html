@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>2.数据代理的定义</title>
+	</head>
+	<body>
+		<!-- 数据代理：通一个对象代理对另外一个对象的属性的操作（读/写） -->
+		<script type="text/javascript">
+			let obj1 = {x:100}
+			let obj2 = {y:200}
+
+			Object.defineProperty(obj2, 'x', {
+				get() {
+					return obj1.x
+				},
+				set(value) {
+					obj1.x = value
+				}
+			})
+		</script>
+	</body>
+</html>

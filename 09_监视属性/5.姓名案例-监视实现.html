@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>5.姓名案例-监视实现</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+  </head>
+  <body>
+    <!-- 
+				computed和watch之间的区别：
+						1.computed能完成的功能，watch都可以完成。
+						2.watch能完成的功能，computed不一定能完成，例如：watch可以进行异步操作。
+				两个重要的小原则：
+							1.所被Vue管理的函数，最好写成普通函数，这样this的指向才是vm 或 组件实例对象。
+							2.所有不被Vue所管理的函数（定时器的回调函数、ajax的回调函数等、Promise的回调函数），最好写成箭头函数，
+								这样this的指向才是vm 或 组件实例对象。
+		-->
+    <!-- 准备好一个容器-->
+    <div id="root">
+      姓：<input type="text" v-model="firstName" /> <br /><br />
+      名：<input type="text" v-model="lastName" /> <br /><br />
+      全名：<span>{{fullName}}</span>
+    </div>
+  </body>
+  <script type="text/javascript">
+    const vm = new Vue({
+      el: "#root",
+      data: {
+        firstName: "张",
+        lastName: "三",
+        fullName: "张-三",
+      },
+      watch: {
+        firstName(newValue, oldValue) {
+          // 下面的箭头函数的，调用的时候找不到this，就会往外层找，就找到了firstName的普通函数的this，就是vm对象
+          setTimeout(() => {
+            console.log(this);
+            this.fullName = newValue + "-" + this.lastName;
+          }, 1000);
+        },
+        lastName(newValue, oldValue) {
+          this.fullName = this.firstName + "-" + newValue;
+        },
+      },
+    });
+  </script>
+</html>
