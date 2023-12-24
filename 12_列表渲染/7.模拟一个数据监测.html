@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>模拟一个数据监测</title>
+  </head>
+  <body>
+    <script type="text/javascript">
+      // 下面是错误的示例，会出现堆栈递归调用问题
+      // let data = {
+      //   name: "尚硅谷",
+      // };
+
+      // Object.defineProperty(data, "name", {
+      //   get() {
+      //     return data.name;
+      //   },
+      //   set(val) {
+      //     data.name = val;
+      //   },
+      // });
+
+      // 下面是一个简单的vue如何监视数据的demo,但是还有两个重要问题没解决，一个是vue是通过代理方式可以直接访问到数据的属性，另外一个是没有解决对象嵌套问题
+      let data = {
+        name: "尚硅谷",
+        address: "北京",
+      };
+
+      // 创建一个监视的实例对象，用于监视data中的属性变化
+      const obs = new Observer(data);
+
+      let vm = {};
+      vm._data = data = obs;
+
+      function Observer(obj) {
+        // 汇总对象中所有属性形成一个数组
+        const keys = Object.keys(obj);
+        // 遍历
+        keys.forEach((k) => {
+          Object.defineProperty(this, k, {
+            get() {
+              return obj[k];
+            },
+            set(val) {
+              console.log("我被修改了。。。");
+              obj[k] = val;
+            },
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

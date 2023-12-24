@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>更新时的一个问题</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+  </head>
+  <body>
+    <!-- 准备好一个容器-->
+    <div id="root">
+      <!-- 遍历数组 -->
+      <h2>人员列表（遍历数组）</h2>
+      <button @click="updateMei">更新马冬梅信息</button>
+      <ul>
+        <li v-for="(p,index) of persons" :key="p.id">{{p.name}}-{{p.age}}</li>
+      </ul>
+    </div>
+  </body>
+  <script type="text/javascript">
+    const vm = new Vue({
+      el: "#root",
+      data: {
+        persons: [
+          { id: "001", name: "马冬梅", age: 43, sex: "女" },
+          { id: "002", name: "周冬雨", age: 27, sex: "女" },
+          { id: "003", name: "周杰伦", age: 51, sex: "男" },
+          { id: "004", name: "温兆伦", age: 62, sex: "男" },
+        ],
+      },
+      methods: {
+        updateMei() {
+          // 下面方式是生效的
+          // this.persons[0].name = "马老师";
+          // this.persons[0].age = 50;
+          // this.persons[0].sex = "男";
+
+          // 另外一种方式是不生效的
+          // this.persons[0] = { id: "001", name: "马老师", age: 50, sex: "男" };
+          // 下面这种方式是生效的
+          this.persons.splice(0, 1, {
+            id: "001",
+            name: "马老师",
+            age: 50,
+            sex: "男",
+          });
+        },
+      },
+    });
+  </script>
+</html>
